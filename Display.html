@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html>
+<!--<head>
+   <script type="text/javascript" src="angular.js"></script>
+   <script src="bootstrap.css"></script>
+  <script src="Style.css"></script> 
+   <script type="text/javascript" src="javascript.js"></script>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta charset="utf-8">
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+ <link  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js "></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+  	//var app=angular.module("conapp",[]);
+  </script>
+	<title></title>
+</head>-->
+<head>
+	
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  
+  <script type="text/javascript" src="angular.js"></script>
+  <link rel="stylesheet" type="text/css" href="C:\xampp\htdocs\Contact\Style.css">
+  <!--<script type="text/javascript">
+
+
+ alert("nik");
+
+  	var app=angular.module("conapp",[]);
+      
+      app.service("prom",function($http){
+           this.createprompt=function(q){
+              alert("hello");
+
+              $http.get("promptcreate.php").then(function(response));
+            
+                $scope.collect=response.data;
+
+
+              }
+
+      });
+
+  	app.controller("mycontrol",function($scope,prom){
+
+  		$scope.prom_click=function(){
+        alert("nikitha");
+          $scope.collect=""
+        prom.createprompt($scope);
+      }
+  	});
+
+  		  
+        
+  	
+  
+  </script>-->
+  <style type="text/css">
+    .Rightaddpart{
+      float:left;
+
+    }
+    
+
+
+
+  </style>
+
+  <script type="text/javascript">
+    
+   var app = angular.module('conapp', []);
+
+
+   app.service("promptc",function($http){
+
+      this.promt_create=function(q){
+        
+           var request = $http({ 
+                     method: "post", 
+                     url: "promptcreate.php", 
+                     headers:{'content-type':'application/x-www-form-urlencoded'}, 
+                     transformRequest: function(obj) {
+                                                  var str = [];
+                                                  for(var p in obj)
+                                                  {
+                                                        //console.log(p);
+                                                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                                  }                                                      
+                                                  //alert(str.join("&"));
+                                                    return str.join("&");
+                                            },
+                     data: { 
+                         
+                         name: q.gro_name,
+                         id:q.gro_id,
+                         email:q.gro_email,
+                         ph:q.gro_ph
+                     } 
+                 }); 
+  
+                 // Store the data-dump of the FORM scope. 
+                 request.success( 
+                     function( data ) { 
+  
+                         //v.message = data; 
+                         //alert(JSON.stringify(data));
+                         q.collect=data;
+
+                     } 
+                 ); 
+
+
+      }
+
+
+      this.gr_display=function(w){
+          alert("hai");
+           $http.get("group_display.php")
+            .then(function(response) {
+                w.collect = response.data;
+            });
+
+      }
+    });
+
+app.controller('mycontrol', function($scope,promptc) {
+    $scope.collect="";
+    
+    $scope.prom_click=function(){
+      
+
+      promptc.promt_create($scope);
+    }
+
+    $scope.group_display=function(){
+
+      promptc.gr_display($scope);
+    }
+    $scope.delete_group=function(){
+      
+    }
+});
+
+    
+  </script>
+	</head>
+	
+<body ng-app="conapp" ng-controller="mycontrol">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container container-fluid">
+    <div class="navbar-header">
+      
+      <h3>MyContacts</h3>
+    
+      <div class="collapse navbar-collapse" id="myid">
+     
+      <ul class="nav nav-pills navbar-nav navbar-right">
+        <div class="search">
+          <input type="text" name="search1" placeholder="Search">
+          <button class="searchbutton" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+      </ul>
+    </div>
+    </div>
+    </nav> 
+    <div class="container-fluid">
+  <h2>Hello</h2>
+  
+  <div class="row">
+    <div class="col-sm-3 leftAddpart" id="leftaddbutton" style="height:100vh;
+  background-color: grey;" >
+    <h1>AddContacts</h1>
+     
+
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Addgroups</button>
+
+  
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Create group</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-Name">
+              <label >Group Name:</label>
+              <input type="text" class="form-control" id="g_name" ng-model="gro_name">
+            </div>
+            <div class="form-Id">
+              <label >Group Id:</label>
+              <input type="text" class="form-control" id="g_id" ng-model="gro_id">
+            </div>
+             <div class="form-Email">
+               <label>Email</label>
+               <input type="text" class="form-control" id="g_Email" ng-model="gro_email">
+             </div>
+             
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="prom_click()">Create</button>
+          
+          
+        </div>
+
+      </div>
+        
+      
+      
+
+  
+  
+          
+          
+        </div>
+
+        
+        
+      </div>
+      
+  
+
+  
+  
+
+    <!--<div class="col-sm-9 Rightaddpart" id="rightaddbutton"  >
+    <h1>groups</h1>
+     </div>-->
+
+</div>
+        <div class="col-sm-9 Rightaddpart" id="rightaddbutton"  >
+        <p>me</p>
+    <button type="button" class="groupdisplay btn btn-info" ng-click="group_display()">Display Groups</button>
+    <table id="groupmembers">
+      
+      <tr ng-repeat="x in collect">
+
+        <td>{{x.gname}}</td>
+        <td>{{x.gmail}}</td>
+        <td><button type="button" class="btn btn-default btn-sm addgroupcontacts">
+          <span class="glyphicon glyphicon-plus"></span> Add contacts
+        </button></td>
+       <td> <button type="button" class="btn btn-default btn-sm editgroupcontacts" >
+          <span class="glyphicon glyphicon-pencil"></span>Edit 
+        </button></td>
+        <td><button type="button" class="btn btn-default btn-sm deletegroupcontacts" ng-click=delete_group()>
+          <span class="glyphicon glyphicon-trash"></span> Trash 
+        </button></td>
+        <td>
+          <a href="#" class="btn btn-info btn-lg dispalygroupcontacts">
+          <span class="glyphicon glyphicon-user"></span> User 
+        </a>
+        </td>
+      </tr>
+    </table>
+     
+
+  <!--1-->
+
+   
+
+  </div>
+
+  
+
+</div>
+</div>
+  		
+  			
+  		
+  	
+</body>
+</html>
